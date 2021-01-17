@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="address" class="cn.skcks.pojo.Address"/>
+
+	<bean id="student" class="cn.skcks.pojo.Student">
+		<!--普通值注入 value-->
+		<property name="name" value="学生"/>
+
+		<!--Bean 注入-->
+		<!--<property name="address" ref="address"/>-->
+		<property name="address">
+			<bean class="cn.skcks.pojo.Address">
+				<property name="address" value="地址A"/>
+			</bean>
+		</property>
+
+		<!--数组注入-->
+		<property name="books">
+			<array>
+				<value>西游记</value>
+				<value>三国演义</value>
+			</array>
+		</property>
+
+		<!--List注入-->
+		<property name="hobby">
+			<list>
+				<value>打代码</value>
+				<value>修BUG</value>
+				<value>上分</value>
+			</list>
+		</property>
+
+		<!--Map注入-->
+		<property name="card">
+			<map>
+				<entry key="idCard" value="12345"/>
+				<entry key="number" value="10000"/>
+			</map>
+		</property>
+
+		<!--Set注入-->
+		<property name="games">
+			<set>
+				<value>王者荣耀</value>
+				<value>原神</value>
+				<value>吃鸡</value>
+			</set>
+		</property>
+
+		<!--Properties注入-->
+		<property name="info">
+			<props>
+				<prop key="age">21</prop>
+			</props>
+		</property>
+
+		<!--null值注入-->
+		<property name="wife">
+			<null/>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="user" class="cn.skcks.pojo.User">
+		<!--有参构造参数-->
+		<!--参数下标赋值-->
+		<!--<constructor-arg index="0" value="Shikong"/>-->
+
+		<!--参数类型赋值 (不建议使用)-->
+		<!--<constructor-arg type="java.lang.String" value="Shikong"/>-->
+
+		<!--参数名赋值-->
+		<constructor-arg name="name" value="Shikong"/>
+
+		<!--对象实例化后 使用 set 方法注入 -->
+		<!--<property name="name" value="Sk"/>-->
+	</bean>
+
+	<!--
+		id: Bean 的唯一标识符
+		class: Bean 对应的全限定名 (包名 + 类名)
+		name: 别名 (可以同时取多个别名)
+	-->
+	<bean id="user2" class="cn.skcks.pojo.User2" name="u2,user+"/>
+	<!--别名-->
+	<alias name="user2" alias="userAlias"/>
+
+
+</beans>

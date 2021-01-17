@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:c="http://www.springframework.org/schema/c"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!--p 命名空间注入(property) 可以直接注入属性的值-->
+	<bean id="user" class="cn.skcks.pojo.User" p:age="21" p:name="user" />
+
+	<!--c 命名空间注入(constructor args) 通过构造器注入-->
+	<!--Spring 默认作用域为单例模式 singleton-->
+	<bean id="user2" class="cn.skcks.pojo.User" c:age="20" c:name="user2"/>
+	<!--原型模式 每次从容器中 get 的时候都会产生一个新对象-->
+	<!--<bean id="user2" class="cn.skcks.pojo.User" c:age="20" c:name="user2" scope="prototype"/>-->
+</beans>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!--开启注解支持-->
+	<context:annotation-config/>
+
+	<bean id="cat" class="cn.skcks.pojo.Cat"/>
+	<bean id="catTest" class="cn.skcks.pojo.Cat"/>
+	<bean id="dogTest" class="cn.skcks.pojo.Dog"/>
+	<bean id="people" class="cn.skcks.pojo.People"/>
+
+	<!--普通方式-->
+	<!--<bean id="people" class="cn.skcks.pojo.People">-->
+	<!--	<property name="name" value="Shikong"/>-->
+	<!--	<property name="dog" ref="dog"/>-->
+	<!--	<property name="cat" ref="cat"/>-->
+	<!--</bean>-->
+
+	<!--自动装配 byName, 会自动在上下文中查找和对象Set方法的值对应的 bean id-->
+	<!--<bean id="people" class="cn.skcks.pojo.People" autowire="byName">-->
+	<!--	<property name="name" value="Shikong"/>-->
+	<!--</bean>-->
+
+	<!--自动装配 byType, 会自动在上下文中查找和对象Set方法的类型系相同的 bean-->
+	<!--<bean id="people" class="cn.skcks.pojo.People" autowire="byType">-->
+	<!--	<property name="name" value="Shikong"/>-->
+	<!--</bean>-->
+</beans>
