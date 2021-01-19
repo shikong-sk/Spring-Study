@@ -20,6 +20,7 @@ public class Config {
 	// 返回值 就是 bean 中的 class
 	@Bean
 	public User user(){
+		// 返回 要注入的对象
 		return new User();
 	}
 }
