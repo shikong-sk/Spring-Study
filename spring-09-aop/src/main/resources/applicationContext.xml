@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!--注册 Bean-->
+	<bean id="userService" class="cn.skcks.service.UserServiceImpl"/>
+	<bean id="log" class="cn.skcks.log.Log"/>
+	<bean id="afterLog" class="cn.skcks.log.AfterLog"/>
+
+	<!--方法一 原生 Spring Api 接口-->
+	<!--配置Aop-->
+	<aop:config>
+		<!-- 切入点 expression 表达式 execution(需要执行的位置 (*[返回类型] *[包名] *[类] *[方法](..)[参数]) -->
+		<aop:pointcut id="pointcut" expression="execution(* cn.skcks.service.UserServiceImpl.*(..))"/>
+		<!--执行环绕添加-->
+		<aop:advisor advice-ref="log" pointcut-ref="pointcut"/>
+		<aop:advisor advice-ref="afterLog" pointcut-ref="pointcut"/>
+	</aop:config>
+
+	<!--方式二 自定义类-->
+	<bean id="customPointCut" class="cn.skcks.custom.CustomPointCut"/>
+	<aop:config>
+		<!--自定义切面-->
+		<aop:aspect ref="customPointCut">
+			<!--切入点-->
+			<aop:pointcut id="point" expression="execution(* cn.skcks.service.UserServiceImpl.*(..))"/>
+			<!--通知-->
+			<aop:before method="before" pointcut-ref="point"/>
+			<aop:after method="after" pointcut-ref="point"/>
+		</aop:aspect>
+	</aop:config>
+
+	<!--方式三 使用注解实现-->
+	<bean id="annotationPointCut" class="cn.skcks.custom.AnnotationPointCut"/>
+	<!--开启注解支持		实现方式 JDK: proxy-target-class="false" (默认), cglib: proxy-target-class="true"-->
+	<aop:aspectj-autoproxy/>
+</beans>
