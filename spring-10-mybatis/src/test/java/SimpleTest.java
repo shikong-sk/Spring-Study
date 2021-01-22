@@ -15,7 +15,7 @@ public class SimpleTest {
 	public void testSpring(){
 		System.out.println("Spring 整合 Mybatis");
 
-		ApplicationContext context = new ClassPathXmlApplicationContext("spring-mybatis.xml");
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		UserMapper userMapper = context.getBean("userMapper",UserMapper.class);
 		System.out.println(userMapper.selectUser());
 	}
