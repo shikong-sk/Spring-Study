@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/tx
+	   http://www.springframework.org/schema/tx/spring-tx.xsd
+	   http://www.springframework.org/schema/aop
+	   https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!--DataSource 使用 Spring 的 数据源替换 Mybatis 的配置 c3p0 dbcp druid-->
+	<!--Spring 提供的 JDBC org.springframework.jdbc.datasource.DriverManagerDataSource -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<!--阿里 Druid 数据源-->
+	<!--<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close" lazy-init="false">-->
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/mybatis?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=GMT%2B8"/>
+		<property name="username" value="root"/>
+		<property name="password" value="12341234"/>
+	</bean>
+
+	<!--SqlSessionFactory-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<!--绑定 mybatis 配置文件-->
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+		<property name="mapperLocations" value="classpath:cn/skcks/mapper/*.xml"/>
+	</bean>
+
+	<!--配置声明式事务-->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!--启动spring注解功能-->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
+	<!--结合AOP实现事务的织入-->
+	<!--配置事务通知-->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<!--需要配置事务的方法-->
+		<!--配置事务的传播特性 propagation
+		 REQUIRED：支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择
+		 SUPPORTS：支持当前事务，如果当前没有事务，就以非事务方式执行
+		 MANDATORY：支持当前事务，如果当前没有事务，就抛出异常
+		 REQUIRES_NEW：新建事务，如果当前存在事务，把当前事务挂起
+		 NOT_SUPPORTED：以非事务方式执行操作，如果当前存在事务，就把当前事务挂起
+		 NEVER：以非事务方式执行，如果当前存在事务，则抛出异常
+		 NESTED：支持当前事务，如果当前事务存在，则执行一个嵌套事务，如果当前没有事务，就新建一个事务
+		-->
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED"/>
+			<tx:method name="update*" propagation="REQUIRED"/>
+			<tx:method name="delete*" propagation="REQUIRED"/>
+			<tx:method name="select*" read-only="true"/>
+			<tx:method name="*" propagation="REQUIRED"/>
+		</tx:attributes>
+	</tx:advice>
+
+	<!--配置事务切入-->
+	<aop:config>
+		<aop:pointcut id="txPointCut" expression="execution(* cn.skcks.mapper.*.*(..))"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
+	</aop:config>
+</beans>
