@@ -1,4 +1,5 @@
 import cn.skcks.mapper.UserMapper;
+import cn.skcks.pojo.User;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -16,8 +17,16 @@ public class SimpleTest {
 		System.out.println("Spring 整合 Mybatis");
 
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+
+		System.out.println("使用 SqlSessionTemplate");
 		UserMapper userMapper = context.getBean("userMapper",UserMapper.class);
 		System.out.println(userMapper.selectUser());
+
+		System.out.println();
+
+		System.out.println("使用 SqlSessionDaoSupport");
+		UserMapper userMapper2 = context.getBean("userMapper2", UserMapper.class);
+		System.out.println(userMapper2.selectUser());
 	}
 
 	@Test
